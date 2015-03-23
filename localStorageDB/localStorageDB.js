@@ -1,31 +1,55 @@
 /*
-	Kailash Nadh (http://nadh.in)
+ storageDB v 0.1
+ adapted from: http://nadh.in/code/localstoragedb/
 
-	localStorageDB v 2.3.1
-	A simple database layer for localStorage
+ === Initialization ===
+ var db = new storageDB("table", localStorage);
+ var db = new storageDB("table", sessionStorage);
 
-	v 2.3.1 Mar 2015
-	v 2.3 Feb 2014 Contribution: Christian Kellner (http://orange-coding.net)
-	v 2.2 Jan 2014 Contribution: Andy Hawkins (http://a904guy.com) 
-	v 2.1 Nov 2013
-	v 2.0 June 2013
-	v 1.9 Nov 2012
+ === Commands ===
+ db.drop();
+ db.tableCount();
+ db.commit();
+ db.serialize();
+ db.isNew();
+ db.tableFields(); param table_name
+ db.tableExists(); param table_name
+ db.tableExistsWarn(); param table_name
+ db.columnExists(); params table_name,column_name
+ db.createTable(); params table_name, fields_name
+ db.dropTable(); param table_name
+ db.alterTable(); params table_name, new_fields, default_values
+ db.rowCount(); param table_name
+ db.insert(); param table_name
+ db.select(); params table_name, data
+ db.sort_results(); params filed_name, order (order ASC/DESC)
+ db.queryByValues(); params table_name, data
+ db.queryByFunction(); params table_name, query_function
+ db.getIDs(); param table_name
+ db.deleteRows(); params table_name, ids
+ db.update(); params table_name, ids, update_function
+ db.error(); param msg;
+ db.clone(); param object
+ db.validateName(); param name
+ db.validFields(); params table_name, data
+ db.validateData(); params table_name, data
+ db.query(); params table_name, query, limit, start, sort, distinct
+ db.queryAll(); params table_name, params
 
-	License	:	MIT License
-*/
+ */
 
 !(function (_global, undefined) {
-	function localStorageDB(db_name, engine) {
+	function storageDB(db_name, engine) {
 		var db_prefix = 'db_',
 			db_id = db_prefix + db_name,
 			db_new = false,	// this flag determines whether a new database was created during an object initialisation
 			db = null;
 
-			try {
-				var storage = (engine == sessionStorage ? sessionStorage: localStorage);
-			} catch(e) { // ie8 hack
-				var storage = engine;
-			}
+		try {
+			var storage = (engine == sessionStorage ? sessionStorage: localStorage);
+		} catch(e) { // ie8 hack
+			var storage = engine;
+		}
 
 		// if the database doesn't exist, create it
 		db = storage[ db_id ];
@@ -170,7 +194,7 @@
 					results.sort(sort_results(sort[i][0], sort[i].length > 1 ? sort[i][1] : null));
 				}
 			}
-			
+
 			// distinct params
 			if(distinct && distinct instanceof Array) {
 				for(var j=0; j<distinct.length; j++) {
@@ -680,10 +704,10 @@
 	// make amd compatible
 	if(typeof define === 'function' && define.amd) {
 		define(function() {
-			return localStorageDB;
+			return storageDB;
 		});
 	} else {
-		_global['localStorageDB'] = localStorageDB;
+		_global['storageDB'] = storageDB;
 	}
 
 }(window));
