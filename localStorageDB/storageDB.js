@@ -3,31 +3,35 @@
  adapted from: http://nadh.in/code/localstoragedb/
 
  === Initialization ===
- var db = new storageDB("table", localStorage);
- var db = new storageDB("table", sessionStorage);
+
+ storageDB(); default engine it's localStorage
+
+ var db = new storageDB(database, localStorage);
+ var db = new storageDB(database, sessionStorage);
 
  === Commands ===
- db.drop();
- db.tableCount();
- db.commit();
- db.serialize();
- db.isNew();
- db.tableFields(); param table_name
- db.tableExists(); param table_name
- db.tableExistsWarn(); param table_name
- db.columnExists(); params table_name,column_name
- db.createTable(); params table_name, fields_name
- db.dropTable(); param table_name
- db.alterTable(); params table_name, new_fields, default_values
- db.rowCount(); param table_name
- db.insert(); param table_name
+
+ db.drop();  #Deletes a database, and purges it from localStorage
+ db.tableCount();  #Returns the number of tables in a database
+ db.commit();  #Commits the database to localStorage. Returns true if successful, and false otherwise
+ db.serialize();  #Returns the entire database as serialized JSON
+ db.isNew();  #Returns true if a database was created at the time of initialisation with the constructor
+ db.tableFields(); param table_name  #Returns the list of fields of a table
+ db.tableExists(); param table_name  #Checks whether a table exists in the database
+ db.tableExistsWarn(); param table_name  #Checks whether a table exists in the database and return error message
+ db.columnExists(); params table_name,column_name  #Checks whether a column exists in database table
+ db.createTable(); params table_name, fields_name  #Creates a table / fields is an array of string fieldnames. 'ID' is a reserved fieldname.
+ db.dropTable(); param table_name  #Deletes a table from the database
+ db.alterTable(); params table_name, new_fields, default_values  #Alter a table / new_fields can be a array of columns OR a string of single column / default_values (optional) can be a object of column's default values OR a default value string for single column for existing rows.
+ db.rowCount(); param table_name  #Returns the number of rows in a table
+ db.insert(); param table_name  #Inserts a row into a table and returns its numerical ID / data is an object literal with field-values / Every row is assigned an auto-incremented numerical ID automatically
  db.select(); params table_name, data
  db.sort_results(); params filed_name, order (order ASC/DESC)
  db.queryByValues(); params table_name, data
  db.queryByFunction(); params table_name, query_function
  db.getIDs(); param table_name
- db.deleteRows(); params table_name, ids
- db.update(); params table_name, ids, update_function
+ db.deleteRows(); params table_name, ids  # Deletes rows from a table matching query, and returns the number of rows deleted / query is either an object literal or a function. If query is not supplied, all rows are deleted
+ db.update(); params table_name, ids, update_function  # Updates existing records in a table matching query, and returns the number of rows affected / query is an object literal or a function. If query is not supplied, all rows are updated / update_function is a function that returns an object literal with the updated values
  db.error(); param msg;
  db.clone(); param object
  db.validateName(); param name
