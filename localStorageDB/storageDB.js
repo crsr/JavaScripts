@@ -44,8 +44,8 @@
 
 !(function (_global, undefined) {
 	function storageDB(db_name, engine) {
-		var db_prefix = 'db_',
-			db_id = db_prefix + db_name,
+		var prefix = 'db_',
+			db_id = prefix + db_name,
 			db_new = false,	// this flag determines whether a new database was created during an object initialisation
 			db = null;
 
